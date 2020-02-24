@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Filemaker to PHP</title>
+</head>
+<body>
+    <h4 style="text-align: center;">Please enter user details</h4><br>
+    <div style="border: cadetblue solid;margin:0px 50px;padding: 30px 50px;">
+    <form action="php_filemaker.php" method="POST" class="container">
+        <div class="form-group">
+          <label for="firstname">First Name</label>
+          <input type="text" class="form-control" name="firstname" placeholder="Enter first name">
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="text" class="form-control" name="lastname"  placeholder="Lastname">
+          </div>
+          <div class="form-group">
+            <label for="emailid">Email Id</label>
+            <input type="text" class="form-control" name="emailid" placeholder="example@gmail.com">
+          </div>
+          <div class="form-group">
+            <label for="contact no">Contact No.</label>
+            <input type="text" class="form-control" name="contactno" placeholder="e.g 9782028332">
+          </div>
+          <div class="form-group">
+            <label for="adminemail">Created By</label>
+            <input type="text" class="form-control" name="adminemail" placeholder="adminemail">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" name="password"  placeholder="Password">
+          </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+</body>
+</html>
