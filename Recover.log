@@ -1,3 +1,11 @@
 ﻿Timestamp	Filename	Error	Message
 2020-02-24 13:14:00.641 +0530	users1.fmp12	0	*** Started consistency check, total of 40 block(s) to check
 2020-02-24 13:14:00.675 +0530	users1.fmp12	0	*** Completed consistency check, checked 40 block(s)
+2020-02-25 12:22:19.631 +0530	users1.fmp12	0	*** Started consistency check of improperly closed file, total of 41 block(s) to check
+2020-02-25 12:22:19.685 +0530	users1.fmp12	8432	Page 41 marked free but not in free list
+2020-02-25 12:22:19.711 +0530	users1.fmp12	0	Reset maximum block sequence number to 3843
+2020-02-25 12:22:19.745 +0530	users1.fmp12	0	*** Completed consistency check, checked 41 block(s)
+2020-02-25 12:22:42.120 +0530	users1.fmp12	0	*** Started consistency check, total of 40 block(s) to check
+2020-02-25 12:22:42.201 +0530	users1.fmp12	0	*** Completed consistency check, checked 40 block(s)
+2020-02-25 12:30:41.517 +0530	users1.fmp12	0	*** Started consistency check, total of 40 block(s) to check
+2020-02-25 12:30:41.601 +0530	users1.fmp12	0	*** Completed consistency check, checked 40 block(s)
