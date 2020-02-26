@@ -1,12 +1,16 @@
 <?php
 session_start();
-
 include 'lib/FileMaker.php';
+// require('activity.php');
 $fm=new FileMaker('users1.fmp12','172.16.9.184','admin','mindfire');
 
-$email = $_POST['emailId'];
-$password = $_POST['pwd'];
+if(!isset($_SESSION['email'])){
+    header("Location: index.html");
+    exit();
+}
 
+$email = $_SESSION['email'];
+$password = $_SESSION['pwd'];
 
 $q = $fm -> newFindCommand('users');
 $q -> addFindCriterion('email_id', '=='.$email);
@@ -14,20 +18,20 @@ $q -> addFindCriterion('pwd', '=='.$password);
 
 $r = $q->execute();
 
-// This is the login portion of the script
-if(empty($email) or empty($password)){
+// // This is the login portion of the script
+// if(empty($email) or empty($password)){
 
-    echo '{"message":"User or password field blank", "code":401}';
+//     echo '{"message":"User or password field blank", "code":401}';
 
-}elseif(FileMaker::isError($r)){
+// }elseif(FileMaker::isError($r)){
 
-    if($r->code == 401){
-        echo '{"message":"User not found or password incorrect", "code":401}';
-    }else{
-        echo '{"message":"Unknown Error", code:'.$r->code.'}';
-    }
+//     if($r->code == 401){
+//         echo '{"message":"User not found or password incorrect", "code":401}';
+//     }else{
+//         echo '{"message":"Unknown Error", code:'.$r->code.'}';
+//     }
 
-}else{
+// }else{
 // This happens if an account has a $username and $password that are found together.
     $account = $r -> getFirstRecord();
     $ID_Account = $account->getField('id');
@@ -37,12 +41,14 @@ if(empty($email) or empty($password)){
 
     $logindata = array('ID_Account' => $ID_Account, 'firstname' => $firstname, 'lastname' => $lastname, 'Contact no' => $contactno);
     // echo json_encode($logindata);
-}
+// }
 
 $_SESSION["id"] = "$ID_Account";
 
 
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,6 +59,7 @@ $_SESSION["id"] = "$ID_Account";
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
+    
 </head>
 
 <body>
@@ -114,29 +121,30 @@ $_SESSION["id"] = "$ID_Account";
                 <br>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <form action="activity.php" method="POST" class="container">
+                    <!--action="activity.php" -->
+                        <form  method="POST" id="activityform" class="container">
                             <div class="form-group">
                                 <label for="firstname">Activity Name</label>
-                                <input type="text" class="form-control" name="activity">
+                                <input type="text" id ="activityname" class="form-control" name="activity">
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6">
                                     <label for="firstname">Start date</label>
-                                    <input type="date" class="form-control" name="startdate">
+                                    <input type="date" id="startdate" class="form-control" name="startdate">
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="firstname">End date</label>
-                                    <input type="date" class="form-control" name="enddate">
+                                    <input type="date" id="enddate" class="form-control" name="enddate">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6">
                                     <label for="firstname">Start time</label>
-                                    <input type="time" class="form-control" name="starttime">
+                                    <input type="time" id="starttime" class="form-control" name="starttime">
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="firstname">End time</label>
-                                    <input type="time" class="form-control" name="endtime">
+                                    <input type="time" id="endtime" class="form-control" name="endtime">
                                 </div>
                             </div>
                             <input type="submit" class=" btn btn-primary">
@@ -149,13 +157,13 @@ $_SESSION["id"] = "$ID_Account";
                     <li class="nav-item">
                         <a class="nav-link" id="table" data-toggle="tab" href="#tableview" role="tab"
                             aria-controls="home" aria-selected="true"><span
-                                style="font-weight:bold;font-size:medium">Your Activities Record</span></a>
+                                style="font-weight:bold;font-size:medium">Your Past Activities Record</span></a>
                     </li>
                 </ul>
                 <br>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane" id="tableview" role="tabpanel" aria-labelledby="table"><br>
-                        <table class="table table-bordered">
+                        <table style="border:1;" id="activitytable" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th scope="col">Activity Name</th>
@@ -163,27 +171,58 @@ $_SESSION["id"] = "$ID_Account";
                                     <th scope="col">End Date</th>
                                     <th scope="col">Start time</th>
                                     <th scope="col">End time</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!--JSON needs to be displayed here by calling the function -->
-                            <?php {
-                                // $result=function calling here to get the associative array//;
-                                // foreach($result as $row) {
-                                 ?>
-                                <tr>
-                                    <td><?php echo $row->Account; ?></td>
-                                    <td><?php echo $row->Username; ?></td>
-                                    <td><?php echo $row->Password; ?></td>
-                                    <td><?php echo $row->Created; ?></td>
-                                    <td><?php echo $row->Strength; ?></td>
-                                </tr>
-                                <?php
-                                }?>
+                            <!--JSON needs to be displayed here by calling the function -->
+                            <?php 
+                                // function calling here to get the associative array
+                                $q = $fm -> newFindCommand('Activity');
+		                        $layout_object = $fm->getLayout('Activity');
+		                        $field_objects = $layout_object->getFields();
+    	                        $q -> addFindCriterion('userid', '=='.$_SESSION["id"]);
+    	                        $r = $q->execute();
 
+		                        $record_objects = $r->getRecords();
+		                        // // echo $r->getFields()[0];
+		                        // // for($x=0;$x<count($r->getFields());$x++){
+		                        // 	// 	echo $r->getFields()[$x]."\n";
+		                        // 	// 	echo $r->getField($r->getFields()[$x])."\n";
+		                        // 	// }
+		                        $arr=array();
+		                        foreach($record_objects as $record_object) {
+			                        $newArray = array();
+			                        foreach($field_objects as $field_object) {
+				                        $field_name = $field_object->getName();
+				                        $field_val = $record_object->getField($field_name);
+				                        $newArray[$field_name] = $field_val;
+			                        }
+			                        array_push($arr,$newArray);
+		                            }
+                                $result=$arr;
+                                for($index=0;$index<count($result); $index++) {
+                                 ?>
+                            <tr>
+                                <td><?php echo $result[$index]['activity_name']; ?></td>
+                                <td><?php echo $result[$index]['start_date'];; ?></td>
+                                <td><?php echo $result[$index]['end_date']; ?></td>
+                                <td><?php echo $result[$index]['start_time'] ?></td>
+                                <td><?php echo $result[$index]['end_time']; ?></td>
+                                <td scope="col"><button class="button" onclick="editActivities(this)" >Edit</button></td>
+                                <td scope="col"><button onclick="deleteActivities(this)">Delete</button></td>
+                            </tr>
+                            <?php
+                                }?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <br>
     </div>
-    <script src="activity.js"></script>
+
+    
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
@@ -193,6 +232,9 @@ $_SESSION["id"] = "$ID_Account";
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="activity.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>

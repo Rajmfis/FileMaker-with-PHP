@@ -25,33 +25,35 @@
   </nav>
     <h4 style="text-align: center;padding: 10px 0px;">Please enter user details</h4><br>
     <div style="border: cadetblue solid;margin:0px 50px;padding: 30px 50px;">
-    <form action="php_filemaker.php" method="POST" class="container">
+    <form id="registerform" method="POST" class="container">
         <div class="form-group">
           <label for="firstname">First Name</label>
-          <input type="text" class="form-control" name="firstname" placeholder="Enter first name">
+          <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter first name">
         </div>
         <div class="form-group">
             <label for="lastname">Last Name</label>
-            <input type="text" class="form-control" name="lastname"  placeholder="Lastname">
+            <input type="text" class="form-control" id="lastname" name="lastname"  placeholder="Lastname">
           </div>
           <div class="form-group">
             <label for="emailid">Email Id</label>
-            <input type="text" class="form-control" name="emailid" placeholder="example@gmail.com">
+            <input type="text" class="form-control" id="emailid" name="emailid" placeholder="example@gmail.com">
           </div>
           <div class="form-group">
             <label for="contact no">Contact No.</label>
-            <input type="text" class="form-control" name="contactno" placeholder="e.g 9782028332">
+            <input type="text" class="form-control" id="contact" name="contactno" placeholder="e.g 9782028332">
           </div>
           <div class="form-group">
             <label for="adminemail">Created By</label>
-            <input type="text" class="form-control" name="adminemail" placeholder="adminemail">
+            <input type="text" class="form-control" id="adminemail" name="adminemail" placeholder="adminemail">
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" name="password"  placeholder="Password">
+            <input type="password" class="form-control" id="pwd" name="password"  placeholder="Password">
           </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>

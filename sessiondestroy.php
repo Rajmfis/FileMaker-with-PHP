@@ -21,6 +21,7 @@ session_start();
 // unset($_SESSION["lastname"]);
 // unset($_SESSION["contactno"]); 
 
+unset($_SESSION["id"]);
 session_destroy();
 // header("Location: login.html");
 // session_start();
