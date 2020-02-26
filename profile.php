@@ -162,7 +162,7 @@ $_SESSION["id"] = "$ID_Account";
                 </ul>
                 <br>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane" id="tableview" role="tabpanel" aria-labelledby="table"><br>
+                    <div class="tab-pane" id="tableview" style="height: 200px; overflow-y:scroll;" role="tabpanel" aria-labelledby="table"><br>
                         <table style="border:1;" id="activitytable" class="table table-bordered">
                             <thead>
                                 <tr>
